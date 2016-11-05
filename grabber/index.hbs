@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.2/foundation.min.css">
+    <style>
+    .wrapper {
+        margin: 20px;
+    }
+
+    .title {
+        display: inline-block;
+        margin: 0 0 20px;
+        padding: 0;
+        text-transform: uppercase;
+        color: #373535;
+        font-size: 1.6em;
+        font-weight: 500;
+        font-family: Helvetica;
+        border-bottom: 1px solid;
+        padding-bottom: 5px;
+    }
+
+    .container-selected {
+        max-width: 400px;
+        display: flex;
+    }
+
+    .container-selected *:not(:last-child) {
+        margin-right: 10px;
+        border-radius: 3px;
+    }
+
+    .success.button {
+        border-radius: 3px;
+        background-color: #5da423;
+    }
+
+    .success.button:hover {
+        background-color: #4a831c;
+    }
+
+    .container-article {
+        width: 100%;
+    }
+
+    .article {
+        font-family: Helvetica;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .article-title {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+    .article-text {
+        margin: 0;
+        font-size: .9em;
+        margin-bottom: 20px;
+    }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <h3 class="title">{{ title_name }}</h3>
+
+        <div class="container-selected">
+            <select name="resours-name" id="resours-name" class="large-8">
+                <option value="https://geektimes.ru/all/">GeekTimes</option>
+                <option value="https://habrahabr.ru/">Habrahabr</option>
+            </select>
+            <select name="article-number" id="article-number" class="large-2">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5" selected>5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <a href="javascript:void(0);" class="success button" id="js-button-article">Загрузить</a>
+        </div>
+        <div class="container-article" id="article"></div>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script>
+        "use strict";
+
+        $('#js-button-article').on('click', function (e) {
+
+            let resourse = $('#resours-name').val();
+            let count = $('#article-number').val();
+            console.log(resourse, count);
+
+            $.post('/article',{ 'url': resourse, 'num': count }, function (out) {
+                $('#article').empty();
+
+                $.each(out.data, function (i, elem) {
+                    $('#article').append('<article class="article"><header class="article-title">'+elem.title+'</header><p class="article-text">'+elem.article+'</p></article>');
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
